@@ -25,3 +25,78 @@ d1_databases = [
 ```
 
 In the code above, the `staging` environment is using a different database (`DATABASE_NAME_1`) than the `production` environment (`DATABASE_NAME_2`).
+
+## Anatomy of `wrangler.toml` file
+
+If you have multiple environments in your D1 binding, your `wrangler.toml` may look like the following:
+
+```toml
+[[env.abc]]
+    binding = "DB"
+    database_name = "DATABASE_NAME"
+    database_id = "DATABASE_ID"
+```
+
+In the above configuration:
+
+- `[[something.abc]]` creates an object `something` with a property `abc` (which is an object itself).
+- Any property below the line in the form `<key> = <value>` is a property of the `abc` object.
+
+Therefore, the above binding is equivalent to:
+
+```json
+{
+	"something": {
+		"abc": [
+			{
+				"binding": "DB",
+    		"database_name": "DATABASE_NAME",
+    		"database_id": "DATABASE_ID"
+			}
+		]
+	}
+}
+```
+
+### Example
+
+```toml
+[[env.staging.d1_databases]]
+    binding = "BINDING_NAME_1"
+    database_name = "DATABASE_NAME_1"
+    database_id = "UUID_1"
+
+[[env.production.d1_databases]]
+    binding = "BINDING_NAME_2"
+    database_name = "DATABASE_NAME_2"
+    database_id = "UUID_2"
+
+```
+
+The above is equivalent to the following structure in JSON:
+
+```json
+{
+  "env": {
+    "staging": {
+      "d1_databases": [
+        {
+          "binding": "BINDING_NAME_1",
+          "database_id": "PRODUCTION_DATABASE_1",
+          "database_name": "UUID_1"
+        }
+      ]
+    },
+		"production": {
+			"d1_databases": [
+				{
+					"binding": "BINDING_NAME_2",
+    			"database_name": "DATABASE_NAME_2",
+    			"database_id": "UUID_2"
+				}
+			]
+		}
+		}
+  }
+}
+```
