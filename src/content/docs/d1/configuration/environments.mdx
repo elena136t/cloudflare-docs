@@ -31,7 +31,7 @@ In the code above, the `staging` environment is using a different database (`DAT
 If you have multiple environments in your D1 binding, your `wrangler.toml` may look like the following:
 
 ```toml
-[[env.abc]]
+[[production.d1_databases]]
     binding = "DB"
     database_name = "DATABASE_NAME"
     database_id = "DATABASE_ID"
@@ -39,15 +39,15 @@ If you have multiple environments in your D1 binding, your `wrangler.toml` may l
 
 In the above configuration:
 
-- `[[something.abc]]` creates an object `something` with a property `abc` (which is an object itself).
-- Any property below the line in the form `<key> = <value>` is a property of the `abc` object.
+- `[[production.d1_databases]]` creates an object `production` with a property `d1_databases` (which is an object itself).
+- Any property below the line in the form `<key> = <value>` is a property of the `d1_databases` object.
 
 Therefore, the above binding is equivalent to:
 
 ```json
 {
-	"something": {
-		"abc": [
+	"production": {
+		"d1_databases": [
 			{
 				"binding": "DB",
     		"database_name": "DATABASE_NAME",
